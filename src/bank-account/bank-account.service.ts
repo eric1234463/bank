@@ -24,4 +24,8 @@ export class BankAccountService {
   async findOneByUserId(userId: string) {
     return this.bankaAccount.findOne({ userId });
   }
+
+  async findOneById(id: string) {
+    return this.bankaAccount.findById(id);
+  }
 }
