@@ -11,12 +11,16 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
 
-  async findOne(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<UserDocument> {
     return this.userModel.findOne({ email });
   }
 
-  async create(userPayload: CreateUserForm): Promise<User>{
-    const user = await this.findOne(userPayload.email);
+  async findOne(id: string): Promise<UserDocument> {
+    return this.userModel.findById(id);
+  }
+
+  async create(userPayload: CreateUserForm): Promise<UserDocument>{
+    const user = await this.findByEmail(userPayload.email);
 
     if (user) {
       throw new Error('User Already exist')

@@ -5,13 +5,16 @@ export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ required: true })
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
   password: string;
 
-  @Prop()
+  @Prop({ default: 'user', enum: ['user', 'staff'] })
   role: string;
 }
 

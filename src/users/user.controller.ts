@@ -5,8 +5,12 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { BankAccountService } from 'src/bank-account/bank-account.service';
 import { CreateUserForm } from './create-user.dto';
 import { UsersService } from './users.service';
 
@@ -14,7 +18,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
-    private readonly authService: AuthService,
+    private readonly bankAccountService: BankAccountService,
   ) {}
 
   @Get('me')
@@ -25,28 +29,17 @@ export class UsersController {
   @Post('new')
   async create(@Body() createUser: CreateUserForm) {
     try {
-      const { password, ...restUser } = await this.userService.create(
+      const user  = await this.userService.create(
         createUser,
       );
+
+      await this.bankAccountService.create({ userId: user._id });
+
+      const { password, ...restUser } = JSON.parse(JSON.stringify(user));
+
       return restUser;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
-  }
-
-  @Post('signIn')
-  async signIn(@Body() createUser: CreateUserForm) {
-    const user = await this.authService.validateUser(
-      createUser.email,
-      createUser.password,
-    );
-
-    if (!user) {
-      throw new HttpException('FORBIDDEN', HttpStatus.FORBIDDEN);
-    }
-
-    const { password, ...restUser } = JSON.parse(JSON.stringify(user));
-
-    return restUser
   }
 }
