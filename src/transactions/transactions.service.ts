@@ -55,16 +55,16 @@ export class TransactionsService {
     const transaction = await this.transaction.findById(payload.transactionsId);
 
     if (!transaction) {
-      throw new NotFoundException('transaction not found')
+      throw new NotFoundException('transaction not found');
     }
 
     if (transaction.from && transaction.to) {
-      throw new UnprocessableEntityException('unable handle operation')
+      throw new UnprocessableEntityException('unable handle operation');
     } else if (transaction.from) {
       await this.updateWithdrawTransaction(transaction, payload.amount);
     } else if (transaction.to) {
       await this.updateDepositTransaction(transaction, payload.amount);
-    } 
+    }
 
     transaction.amount = payload.amount;
 
@@ -122,5 +122,25 @@ export class TransactionsService {
       })
       .limit(limit)
       .skip(offset);
+  }
+
+  hideSensitiveInfo(transaction: TransactionDocument, shouldHide: boolean) {
+    const newTransaction = transaction.toJSON();
+    const hideKeys = ['from', 'to', 'amount'];
+    if (shouldHide) {
+      const digit = 4;
+      const argRegEx = new RegExp(`[\\s\\S]*(?=\\S{${digit}})`);
+      hideKeys.forEach(key => {
+        const value = String(transaction[key]);
+        if (value.length > digit) {
+          newTransaction[key] = value.replace(
+            argRegEx,
+            '*'.repeat(value.length - digit),
+          );
+        }
+      });
+    }
+
+    return newTransaction;
   }
 }

@@ -11,6 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/auth.guard';
+import { BankAccountDocument } from 'src/bank-account/bank-account.schema';
 import { BankAccountService } from 'src/bank-account/bank-account.service';
 import {
   CreateTransactionForm,
@@ -58,10 +59,16 @@ export class TransactionsController {
     @Body() payload: ViewTransactionForm,
     @Request() req,
   ) {
-    const bankAccount = await this.bankAccountService.findOneByIdAndUserId(
-      params.id,
-      req.user._id,
-    );
+    let bankAccount: BankAccountDocument | null = null;
+
+    if (req.user.role === 'staff') {
+      bankAccount = await this.bankAccountService.findOneById(params.id);
+    } else {
+      bankAccount = await this.bankAccountService.findOneByIdAndUserId(
+        params.id,
+        req.user._id,
+      );
+    }
 
     if (!bankAccount) {
       throw new HttpException(
@@ -70,10 +77,12 @@ export class TransactionsController {
       );
     }
 
-    return this.transactionsService.index({
+    const transactions = await this.transactionsService.index({
       ...payload,
       bankAccountId: bankAccount._id,
     });
+
+    return transactions.map(transaction => this.transactionsService.hideSensitiveInfo(transaction, req.user.role === 'staff' && bankAccount.userId != req.user._id))
   }
 
   @UseGuards(AuthenticatedGuard)
@@ -97,7 +106,7 @@ export class TransactionsController {
 
     return this.transactionsService.update({
       ...payload,
-      transactionsId: params. transactionsId,
+      transactionsId: params.transactionsId,
       bankAccountId: bankAccount._id,
     });
   }
