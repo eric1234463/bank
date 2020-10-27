@@ -82,7 +82,12 @@ export class TransactionsController {
       bankAccountId: bankAccount._id,
     });
 
-    return transactions.map(transaction => this.transactionsService.hideSensitiveInfo(transaction, req.user.role === 'staff' && bankAccount.userId != req.user._id))
+    return transactions.map(transaction =>
+      this.transactionsService.hideSensitiveInfo(
+        transaction,
+        req.user.role === 'staff' && bankAccount.userId != req.user._id,
+      ),
+    );
   }
 
   @UseGuards(AuthenticatedGuard)
