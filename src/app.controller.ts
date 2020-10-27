@@ -16,4 +16,10 @@ export class AppController {
   async signIn(@Request() req) {
     return req.user
   }
+
+  @Post('auth/logout')
+  async logout(@Request() req) {
+    await req.logout()
+    return {}
+  }
 }

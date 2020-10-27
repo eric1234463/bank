@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types} from 'mongoose';
 import { BankAccount, BankAccountDocument } from './bank-account.schema';
 import { CreateBankAccountForm } from './create-bank-account.dto';
 
@@ -25,7 +25,14 @@ export class BankAccountService {
     return this.bankaAccount.findOne({ userId });
   }
 
-  async findOneById(id: string) {
+  async findOneById(id: string | Types.ObjectId) {
     return this.bankaAccount.findById(id);
+  }
+
+  async findOneByIdAndUserId(id: string, userId: string) {
+    return this.bankaAccount.findOne({
+      _id: id,
+      userId,
+    });
   }
 }

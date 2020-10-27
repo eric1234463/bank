@@ -1,18 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type TransactionDocument = Transaction & Document;
 
 @Schema()
 export class Transaction {
-  @Prop({ required: true })
-  bankAccountId: Types.ObjectId;
+  @Prop()
+  from: string;
 
   @Prop()
-  from: Types.ObjectId;
-
-  @Prop()
-  to: Types.ObjectId;
+  to: string;
 
   @Prop({ required: true })
   amount: number;
