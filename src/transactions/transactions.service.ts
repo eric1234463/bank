@@ -58,13 +58,13 @@ export class TransactionsService {
       throw new NotFoundException('transaction not found')
     }
 
-    if (transaction.from && !transaction.to) {
+    if (transaction.from && transaction.to) {
+      throw new UnprocessableEntityException('unable handle operation')
+    } else if (transaction.from) {
       await this.updateWithdrawTransaction(transaction, payload.amount);
-    }
-
-    if (!transaction.from && transaction.to) {
+    } else if (transaction.to) {
       await this.updateDepositTransaction(transaction, payload.amount);
-    }
+    } 
 
     transaction.amount = payload.amount;
 
