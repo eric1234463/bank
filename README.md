@@ -21,6 +21,75 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+# Testing flow
+```
+1. localhost:3000/users/new
+{
+  "email": "eric.kwong@gmail.com",
+  "name": "Eric",
+  "password": "12345678",
+}
+
+2. call same api again localhost:3000/users/new it should show error
+{
+  "email": "eric.kwong@gmail.com",
+  "name": "Eric",
+  "password": "12345678",
+}
+
+3. call localhost:3000/auth/logout
+{
+  "email": "eric.kwong@gmail.com",
+  "name": "Eric",
+  "password": "12345678",
+}
+
+4. call localhost:3000/users/new
+{
+  "email": "eric1234463@gmail.com",
+  "name": "Eric",
+  "password": "12345678",
+  "role": "staff"
+}
+
+5. call localhost:3000/bank-account/me should show your bank account
+
+6. localhost:3000/bank-account/:bankId/transactions/new - deposits money
+
+{
+    "from": null",
+    "to": "bankId",
+    "amount": 200
+}
+
+7. localhost:3000/bank-account/:bankId/transactions/new - withdraw money
+
+{
+    "from": "bankId",
+    "to": null,
+    "amount": 200
+}
+
+8. localhost:3000/bank-account/:bankId/transactions/new - transfer money to other account
+
+{
+    "from": "bankId",
+    "to": "bankId",
+    "amount": 200
+}
+
+9. localhost:3000/bank-account/:bankId/transactions/:id - update transactions
+
+{
+    "amount": 200
+}
+
+9. localhost:3000/bank-account/:bankId/transactions - view transactions -- with staff user
+
+9. localhost:3000/bank-account/:bankId/transactions - view transactions -- with own user
+
+```
+
 ## Test
 
 ```bash
