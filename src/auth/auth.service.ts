@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/users/users.schema';
+import { User } from '../users/users.schema';
 import { UsersService } from '../users/users.service';
 import { compareSync } from 'bcrypt';
 

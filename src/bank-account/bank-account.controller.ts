@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { AuthenticatedGuard } from 'src/auth/auth.guard';
+import { AuthenticatedGuard } from '../auth/auth.guard';
 import { BankAccountService } from './bank-account.service';
 
 @Controller('bank-account')

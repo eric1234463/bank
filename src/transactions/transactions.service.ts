@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { BankAccountService } from 'src/bank-account/bank-account.service';
+import { BankAccountService } from '../bank-account/bank-account.service';
 import {
   CreateTransactionForm,
   UpdateTransactionForm,

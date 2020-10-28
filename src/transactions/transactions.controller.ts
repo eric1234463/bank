@@ -10,9 +10,9 @@ import {
   Request,
   Put,
 } from '@nestjs/common';
-import { AuthenticatedGuard } from 'src/auth/auth.guard';
-import { BankAccountDocument } from 'src/bank-account/bank-account.schema';
-import { BankAccountService } from 'src/bank-account/bank-account.service';
+import { AuthenticatedGuard } from '../auth/auth.guard';
+import { BankAccountDocument } from '../bank-account/bank-account.schema';
+import { BankAccountService } from '../bank-account/bank-account.service';
 import {
   CreateTransactionForm,
   UpdateTransactionForm,

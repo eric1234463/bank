@@ -7,9 +7,7 @@ import {
   Post,
   Request,
 } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { BankAccountService } from 'src/bank-account/bank-account.service';
+import { BankAccountService } from '../bank-account/bank-account.service';
 import { CreateUserForm } from './create-user.dto';
 import { UsersService } from './users.service';
 

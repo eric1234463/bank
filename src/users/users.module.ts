@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersController } from './user.controller';
 import { UsersService } from './users.service';
 import { User, UserSchema } from './users.schema';
-import { BankAccountModule } from 'src/bank-account/bank-account.module';
+import { BankAccountModule } from '../bank-account/bank-account.module';
 
 @Module({
   imports: [

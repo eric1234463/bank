@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BankAccountModule } from 'src/bank-account/bank-account.module';
+import { BankAccountModule } from '../bank-account/bank-account.module';
 import {
   BankAccount,
   BankAccountSchema,
-} from 'src/bank-account/bank-account.schema';
+} from '../bank-account/bank-account.schema';
 
 import { TransactionsController } from './transactions.controller';
 import { Transaction, TransactionSchema } from './transactions.schema';
