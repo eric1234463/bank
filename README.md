@@ -84,9 +84,9 @@ $ npm run start:prod
     "amount": 200
 }
 
-9. localhost:3000/bank-account/:bankId/transactions - view transactions -- with staff user
+10. localhost:3000/bank-account/:bankId/transactions - view transactions -- with staff user
 
-9. localhost:3000/bank-account/:bankId/transactions - view transactions -- with own user
+11. localhost:3000/bank-account/:bankId/transactions - view transactions -- with own user
 
 ```
 
