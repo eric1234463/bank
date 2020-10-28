@@ -29,8 +29,14 @@ export class TransactionsService {
       if (!fromBankAccount) {
         throw new UnprocessableEntityException('no from bank account found');
       }
+
+      if (payload.amount > fromBankAccount.totalBalance) {
+        throw new UnprocessableEntityException('not enough money for withdraw');
+      }
+
       fromBankAccount.totalBalance =
         fromBankAccount.totalBalance - payload.amount;
+        
       await fromBankAccount.save();
     }
 
@@ -44,6 +50,14 @@ export class TransactionsService {
       }
       toBankAccount.totalBalance = toBankAccount.totalBalance + payload.amount;
       await toBankAccount.save();
+    }
+
+    if (payload.from && payload.to) {
+      await this.transaction.create({
+        ...payload,
+        to: payload.from,
+        from: payload.to,
+      });
     }
 
     const transaction = await this.transaction.create(payload);
@@ -81,6 +95,10 @@ export class TransactionsService {
     );
     const diffAmount = transaction.amount - newAmount;
 
+    if (newAmount > bankAccount.totalBalance) {
+      throw new UnprocessableEntityException('not enough money for withdraw');
+    }
+
     bankAccount.totalBalance = bankAccount.totalBalance + diffAmount;
 
     await bankAccount.save();
@@ -113,10 +131,15 @@ export class TransactionsService {
       .find({
         $or: [
           {
+            from: null,
             to: bankAccountId,
           },
           {
             from: bankAccountId,
+            to: null
+          },
+          {
+            to: bankAccountId
           },
         ],
       })

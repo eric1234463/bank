@@ -85,7 +85,7 @@ export class TransactionsController {
     return transactions.map(transaction =>
       this.transactionsService.hideSensitiveInfo(
         transaction,
-        req.user.role === 'staff' && bankAccount.userId != req.user._id,
+        req.user.role === 'staff' && !bankAccount.userId.equals(req.user._id),
       ),
     );
   }

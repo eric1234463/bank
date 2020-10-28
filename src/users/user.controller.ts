@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
@@ -27,17 +26,19 @@ export class UsersController {
   }
 
   @Post('new')
-  async create(@Body() createUser: CreateUserForm) {
+  async create(@Body() createUser: CreateUserForm, @Request() req) {
     try {
       const user  = await this.userService.create(
         createUser,
       );
 
-      await this.bankAccountService.create({ userId: user._id });
+      return req.login(user, async () => {
+        await this.bankAccountService.create({ userId: user._id });
 
-      const { password, ...restUser } = JSON.parse(JSON.stringify(user));
-
-      return restUser;
+        const { password, ...restUser } = JSON.parse(JSON.stringify(user));
+  
+        return restUser;
+      });
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
