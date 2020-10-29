@@ -52,14 +52,6 @@ export class TransactionsService {
       await toBankAccount.save();
     }
 
-    if (payload.from && payload.to) {
-      await this.transaction.create({
-        ...payload,
-        to: payload.from,
-        from: payload.to,
-      });
-    }
-
     const transaction = await this.transaction.create(payload);
 
     return transaction;
@@ -137,6 +129,9 @@ export class TransactionsService {
           {
             from: bankAccountId,
             to: null
+          },
+          {
+            from: bankAccountId
           },
           {
             to: bankAccountId
