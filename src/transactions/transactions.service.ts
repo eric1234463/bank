@@ -123,14 +123,6 @@ export class TransactionsService {
       .find({
         $or: [
           {
-            from: null,
-            to: bankAccountId,
-          },
-          {
-            from: bankAccountId,
-            to: null
-          },
-          {
             from: bankAccountId
           },
           {
